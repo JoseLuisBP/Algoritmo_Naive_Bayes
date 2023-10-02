@@ -5,16 +5,16 @@ from naive_bayes import NaiveBayes
 def main():
     archivo = "datasets/golf-dataset-categorical.csv"
     tam_ds_entrenamiento = 0.7
-    columna_clase = 'Play'
 
-    ds = pd.read_csv(archivo)
+    df = pd.read_csv(archivo)
 
-    print(ds)
+    ds_entrenamiento = df.sample(frac = tam_ds_entrenamiento)
+    print(ds_entrenamiento)
+    ds_prueba = df.drop(ds_entrenamiento.index)
+    
+    modelo = NaiveBayes(ds_entrenamiento, ds_prueba)
 
-    ds_entrenamiento = ds.sample(frac = tam_ds_entrenamiento)
-    ds_prueba = ds.drop(ds_entrenamiento.index)
-
-    # modelo = NaiveBayes()
+    modelo.fit()
 
 if __name__ == '__main__':
     main()
