@@ -44,5 +44,32 @@ class NaiveBayes():
         self.tablas_verosimilitud['Play_No'] = self.tablas_frecuencia['Play_No'] / total_play
 
     def evaluar_pruebas(self):
-        print("Evalua cada instancia y cueta aciertos totales")
-        print("muestra desempeño (#%)")
+        aciertos = 0
+        total_instancias = len(self.ds_prueba)
+
+        for _, instancia in self.ds_prueba.iterrows():
+            clase_real = instancia['Play']
+            instancia = instancia.drop('Play')
+
+            # Calcular la probabilidad para cada clase ("Yes" y "No")
+            probabilidad_yes = self.calcular_probabilidad('Yes', instancia)
+            probabilidad_no = self.calcular_probabilidad('No', instancia)
+
+            # Asignar la clase más probable
+            clase_predicha = 'Yes' if probabilidad_yes > probabilidad_no else 'No'
+
+            # Verificar si la predicción es correcta
+            if clase_predicha == clase_real:
+                aciertos += 1
+
+        # Calcular el porcentaje de acierto
+        porcentaje_acierto = aciertos / total_instancias
+        return porcentaje_acierto
+
+    def calcular_probabilidad(self, clase, instancia):
+        probabilidad = 1.0
+        for columna, valor in instancia.items():
+            clave = f"{columna}_{clase}_{valor}"
+            probabilidad *= self.tablas_v.get(clave, 0)
+
+        return probabilidad
