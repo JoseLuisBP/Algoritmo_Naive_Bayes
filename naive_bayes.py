@@ -16,9 +16,11 @@ class NaiveBayes():
 
     def crear_tablas_frecuencia(self):
         
-        ds_entrenamiento_setosa = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-setosa"]
-        ds_entrenamiento_virginica = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-virginica"]
-        ds_entrenamiento_versicolor = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-versicolor"]
+        ds_entrenamiento_setosa = self.ds_entrenamiento[self.ds_entrenamiento["iris"] == "Iris-setosa"]
+        ds_entrenamiento_virginica = self.ds_entrenamiento[self.ds_entrenamiento["iris"] == "Iris-virginica"]
+        ds_entrenamiento_versicolor = self.ds_entrenamiento[self.ds_entrenamiento["iris"] == "Iris-versicolor"]
+
+        tablas_frecuencia = {"setosa":{"sepal_l":[],"sepal_w":[], "petal_l":[], "petal_w": []},"versicolor":[],"virginica":[]}
 
         for columna in self.ds_entrenamiento.columns:
             frecuencia = ds_entrenamiento_setosa[columna].value_counts()
