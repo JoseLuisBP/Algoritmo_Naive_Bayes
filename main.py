@@ -11,8 +11,6 @@ def main():
 
     ds_entrenamiento = df.sample(frac = tam_ds_entrenamiento)
     ds_prueba = df.drop(ds_entrenamiento.index)
-
-    print(ds_prueba)
     
     modelo = NaiveBayes(ds_entrenamiento, ds_prueba)
 
