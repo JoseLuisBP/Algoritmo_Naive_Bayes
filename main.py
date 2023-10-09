@@ -18,3 +18,22 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    
+
+
+# ##########################Ejemplo output#########################
+#
+# Matriz de Confusión:
+#     s  vc v    -  M
+# s [[16  0  0]
+#vc [ 0 14  0]
+# v [ 0  2 13]]
+
+# Exactitud del modelo:  0.9555555555555556
+
+# Precision por clase:
+#  [1.    0.875 1.   ]
+
+# Recall por clase:
+#  [1.         1.         0.86666667]
