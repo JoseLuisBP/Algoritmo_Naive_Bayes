@@ -11,20 +11,26 @@ class NaiveBayes():
         self.crear_tablas_frecuencia()
         self.crear_tablas_verosimilitud()
         self.evaluar_pruebas()
+        self.matriz_confusion()
         
 
     def crear_tablas_frecuencia(self):
         
-        ds_entrenamiento_yes = self.ds_entrenamiento[self.ds_entrenamiento["Play"] == "Yes"]
-        ds_entrenamiento_no = self.ds_entrenamiento[self.ds_entrenamiento["Play"] == "No"]
+        ds_entrenamiento_setosa = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-setosa"]
+        ds_entrenamiento_virginica = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-virginica"]
+        ds_entrenamiento_versicolor = self.ds_entrenamiento[self.ds_entrenamiento[4] == "Iris-versicolor"]
 
         for columna in self.ds_entrenamiento.columns:
-            frecuencia = ds_entrenamiento_yes[columna].value_counts()
-            self.tablas_frecuencia[f"{columna}_Yes"] = frecuencia
+            frecuencia = ds_entrenamiento_setosa[columna].value_counts()
+            self.tablas_frecuencia[f"{columna}_setosa"] = frecuencia
 
         for columna in self.ds_entrenamiento.columns:
-            frecuencia = ds_entrenamiento_no[columna].value_counts()
-            self.tablas_frecuencia[f"{columna}_No"] = frecuencia
+            frecuencia = ds_entrenamiento_virginica[columna].value_counts()
+            self.tablas_frecuencia[f"{columna}_virginica"] = frecuencia
+
+        for columna in self.ds_entrenamiento.columns:
+            frecuencia = ds_entrenamiento_versicolor[columna].value_counts()
+            self.tablas_frecuencia[f"{columna}_versicolor"] = frecuencia
 
 
     def crear_tablas_verosimilitud(self):
@@ -73,3 +79,6 @@ class NaiveBayes():
             probabilidad *= self.tablas_v.get(clave, 0)
 
         return probabilidad
+
+    def matriz_confusion(self):
+        print("matriz confision")
