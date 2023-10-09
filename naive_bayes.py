@@ -11,7 +11,6 @@ class NaiveBayes():
     def fit(self):
         self.crear_tablas_frecuencia()
         self.evaluar_pruebas()
-        self.matriz_confusion()
         
 
     def crear_tablas_frecuencia(self):
@@ -32,6 +31,7 @@ class NaiveBayes():
         # }
         clases = ["Iris-setosa", "Iris-virginica", "Iris-versicolor"]
         for clase in clases:
+            # separa el data set en uno con solo instancias de dicha clase omitiendo esta
             ds_clase = self.ds_entrenamiento[self.ds_entrenamiento["iris"] == clase].iloc[:, :-1]
             media = ds_clase.mean()
             desviacion_estandar = ds_clase.std()
@@ -45,12 +45,14 @@ class NaiveBayes():
         clase_esperada = self.ds_prueba['iris'].values
         clase_estimada = []
 
+        # intera sobre las filas de df (i,serie)
         for _, instancia in self.ds_prueba.iterrows():
             probabilidades = []
 
             for clase in self.tablas_frecuencia:
                 probabilidad_clase = 1.0
 
+                #  intera las columnas ignorando la ultima
                 for c in instancia.index[:-1]:
                     mu = self.tablas_frecuencia[clase]["media"][c]
                     sigma = self.tablas_frecuencia[clase]["desviacion_estandar"][c]
@@ -58,6 +60,7 @@ class NaiveBayes():
 
                 probabilidades.append(probabilidad_clase)
             
+            # Predice la clase para la instancia actual basada en las probabilidades calculadas para cada clase
             clase_predicha = list(self.tablas_frecuencia.keys())[np.argmax(probabilidades)]
             clase_estimada.append(clase_predicha)
 
@@ -66,15 +69,11 @@ class NaiveBayes():
         precision_por_clase = precision_score(clase_esperada, clase_estimada, average=None, labels=["Iris-setosa", "Iris-versicolor", "Iris-virginica"])
         recall_por_clase = recall_score(clase_esperada, clase_estimada, average=None, labels=["Iris-setosa", "Iris-versicolor", "Iris-virginica"])
 
-        print("Matriz de Confusión:")
-        print(matriz_confusion)
-        print("Exactitud del modelo:", exactitud)
-        print("Precision por clase:", precision_por_clase)
-        print("Recall por clase:", recall_por_clase)
+        print("\nMatriz de Confusión:\n", matriz_confusion)
+        print("\nExactitud del modelo: ", exactitud)
+        print("\nPrecision por clase:\n", precision_por_clase)
+        print("\nRecall por clase:\n", recall_por_clase)
 
 
     def densidad_probabilidad(self, x, mu, sigma):
         return 1.0 / (np.sqrt(2 * np.pi) * sigma) * np.exp(-0.5 * ((x - mu) / sigma)**2)
-
-    def matriz_confusion(self):
-        print("matriz confision")
